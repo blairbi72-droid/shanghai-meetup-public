@@ -323,7 +323,7 @@ const tabsEl = document.querySelector('#categoryTabs');
 const cardsEl = document.querySelector('#cards');
 const nameEl = document.querySelector('#currentDistrictName');
 const sourceStatusEl = document.querySelector('#sourceStatus');
-const POI_API_BASE = '';
+const POI_API_BASE = 'https://test-d0ggtarpjab557c0b-1472173087.ap-shanghai.app.tcloudbase.com';
 
 function keyOf(district, category, index) { return `${district}|${category}|${index}`; }
 function getDistrict(id) { return baseDistricts.find(d => d.id === id); }
