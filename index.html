@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>上海朋友聚会选择器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <header class="hero">
+    <nav class="topbar">
+      <div class="brand"><span>沪</span>聚会灵感地图</div>
+      <a class="ghost-link" href="#planner">开始选择</a>
+    </nav>
+    <section class="hero-grid">
+      <div>
+        <p class="eyebrow">Shanghai Meetup Planner</p>
+        <h1>让朋友聚会从“去哪儿”变成“一起选”。</h1>
+        <p class="lead">以上海 16 个区为地图入口，按室内游玩、室外景点、美食、娱乐四类展示每区 TOP10 推荐。TOP10 不再堆同类地点，而是按密室、新奇体验、桌游、不同菜系等细分场景各取 TOP1，方便朋友们快速比较不同玩法。</p>
+        <div class="hero-actions">
+          <button class="primary" id="scrollToPlanner">打开地图选择</button>
+          <button class="secondary" id="loadDemo">载入示例投票</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="pulse-dot"></div>
+        <p>本周聚会决策</p>
+        <strong id="heroSelectedCount">0</strong>
+        <span>项偏好已被选择</span>
+      </div>
+    </section>
+  </header>
+
+  <main id="planner" class="layout">
+    <section class="panel map-panel">
+      <div class="section-title">
+        <p>01 / 选择区域</p>
+        <h2>上海区域地图</h2>
+      </div>
+      <p class="hint">点击地图上的区块，右侧会切换到该区域的场景化 TOP10 推荐。每个细分场景只保留一个首选项，美食按菜系拆分，避免重复推荐。颜色越亮表示当前选择越多。</p>
+      <div class="map-wrap">
+        <svg id="districtMap" viewBox="0 0 760 560" role="img" aria-label="上海市区域选择地图"></svg>
+      </div>
+      <div class="district-strip" id="districtStrip"></div>
+    </section>
+
+    <section class="panel picker-panel">
+      <div class="section-title">
+        <p>02 / 勾选想玩</p>
+        <h2><span id="currentDistrictName">黄浦区</span>推荐</h2>
+      </div>
+      <div class="data-source-box">
+        <div>
+          <strong>真实数据源：高德 POI</strong>
+          <p id="sourceStatus">已改为服务端代理模式：高德 Key 存在后端，朋友打开链接无需输入 Key，也不会看到 Key。</p>
+        </div>
+        <form class="source-actions proxy-actions" id="sourceForm">
+          <button id="refreshPoi" class="secondary" type="button">刷新真实 POI</button>
+        </form>
+        <details class="admin-config">
+          <summary>公网部署配置说明</summary>
+          <small>在 Vercel 项目设置里添加环境变量 <code>AMAP_WEB_SERVICE_KEY</code> 后，朋友打开公网链接即可使用真实 POI。Key 只在服务端 API 中读取，不会进入浏览器。</small>
+        </details>
+      </div>
+      <div class="category-tabs" id="categoryTabs"></div>
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <aside class="panel result-panel">
+      <div class="section-title">
+        <p>03 / 统计结果</p>
+        <h2>朋友们的共同答案</h2>
+      </div>
+      <div class="voter-box">
+        <label for="voterName">当前朋友</label>
+        <div class="voter-row">
+          <input id="voterName" type="text" placeholder="例如：小毕 / Alice" />
+          <button id="saveVoter">保存选择</button>
+        </div>
+        <small>可以多人轮流选择，保存后继续给下一位朋友勾选。</small>
+      </div>
+      <div class="stats-grid">
+        <div><strong id="statPeople">0</strong><span>位朋友</span></div>
+        <div><strong id="statItems">0</strong><span>总选择</span></div>
+      </div>
+      <div class="winner-card">
+        <span>当前最高票</span>
+        <h3 id="winnerText">还没有选择</h3>
+        <p id="winnerSub">先从地图上选一个区域开始吧。</p>
+      </div>
+      <div class="result-block">
+        <h3>活动榜单</h3>
+        <div id="rankingList" class="ranking-list empty">暂无数据</div>
+      </div>
+      <div class="result-block">
+        <h3>区域热度</h3>
+        <div id="districtStats" class="bar-list empty">暂无数据</div>
+      </div>
+      <div class="utility-actions">
+        <button id="copySummary" class="secondary full">复制统计摘要</button>
+        <button id="resetAll" class="danger full">清空选择</button>
+      </div>
+    </aside>
+  </main>
+
+  <section class="how-it-works">
+    <div class="section-title center">
+      <p>How it works</p>
+      <h2>适合朋友圈快速达成共识</h2>
+    </div>
+    <div class="steps">
+      <article><span>1</span><h3>按区域缩小范围</h3><p>先确认大家可接受的上海区域，避免跨城通勤式聚会。</p></article>
+      <article><span>2</span><h3>按活动类型挑选</h3><p>室内、室外、美食、娱乐分组展示，能照顾不同天气和预算。</p></article>
+      <article><span>3</span><h3>多人勾选自动统计</h3><p>每位朋友保存偏好后，系统输出最高票活动和热门区域。</p></article>
+    </div>
+  </section>
+
+  <footer>
+    <p>推荐内容为聚会选题原型数据，可后续接入真实 POI、评分、距离和预算数据。</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
