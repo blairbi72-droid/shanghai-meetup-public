@@ -1,0 +1,15 @@
+{
+  "name": "shanghai-meetup-public",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "vercel dev",
+    "check": "node --check api/v1/poi.js && node --check api/v1/health.js && node --check api/v1/config/status.js && node --check app.js"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "devDependencies": {
+    "vercel": "latest"
+  }
+}
