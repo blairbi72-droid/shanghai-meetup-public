@@ -13,4 +13,4 @@
 3. 进入 Project Settings → Environment Variables，添加：
 
 ```text
-AMAP_WEB_SERVICE_KEY = 你的高德 Web 服务 Key
+AMAP_WEB_SERVICE_KEY = 	d8d9e41fb488ae519b68de42d1b62243
