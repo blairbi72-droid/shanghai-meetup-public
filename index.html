@@ -3,126 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>上海朋友聚会选择器｜纯静态版</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #080a14;
-      --panel: rgba(255, 255, 255, 0.08);
-      --text: #f8fbff;
-      --muted: #a9b5cc;
-      --line: rgba(255, 255, 255, 0.13);
-      --brand: #73f1d4;
-      --brand-2: #8ca7ff;
-      --gold: #ffd166;
-      --pink: #ff7ab6;
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: radial-gradient(circle at top left, rgba(115, 241, 212, 0.18), transparent 28%),
-                  radial-gradient(circle at 85% 12%, rgba(140, 167, 255, 0.18), transparent 26%),
-                  linear-gradient(140deg, #080a14 0%, #10142a 52%, #07111c 100%);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-    .ambient { position: fixed; width: 360px; height: 360px; border-radius: 999px; filter: blur(50px); opacity: .42; pointer-events: none; z-index: -1; }
-    .ambient-a { background: #00e5b0; left: -120px; top: 180px; animation: float 8s ease-in-out infinite; }
-    .ambient-b { background: #7b61ff; right: -140px; top: 460px; animation: float 10s ease-in-out infinite reverse; }
-    @keyframes float { 50% { transform: translate3d(24px, -34px, 0) scale(1.08); } }
-    .hero { padding: 26px clamp(18px, 4vw, 58px) 50px; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; max-width: 1280px; margin: 0 auto 64px; }
-    .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; letter-spacing: .04em; }
-    .brand span { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 13px; color: #06120f; background: linear-gradient(135deg, var(--brand), var(--gold)); box-shadow: 0 10px 30px rgba(115, 241, 212, .28); }
-    .ghost-link { color: var(--text); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 10px 18px; background: rgba(255,255,255,.06); }
-    .hero-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 40px; align-items: center; }
-    .eyebrow, .section-title p { margin: 0 0 10px; color: var(--brand); font-weight: 800; text-transform: uppercase; letter-spacing: .16em; font-size: 13px; }
-    h1 { margin: 0; max-width: 840px; font-size: clamp(44px, 8vw, 90px); line-height: .98; letter-spacing: -.06em; font-weight: 900; }
-    .lead { max-width: 760px; color: var(--muted); font-size: 18px; line-height: 1.9; margin: 26px 0 34px; }
-    .hero-actions, .utility-actions, .voter-row { display: flex; gap: 12px; flex-wrap: wrap; }
-    button { border: 0; cursor: pointer; color: var(--text); font-family: inherit; font-weight: 800; transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border .18s ease; }
-    button:hover { transform: translateY(-2px); }
-    .primary, .secondary, .danger { border-radius: 16px; padding: 13px 20px; }
-    .primary { color: #051412; background: linear-gradient(135deg, var(--brand), #e8ff77); box-shadow: 0 14px 36px rgba(115, 241, 212, .24); }
-    .secondary { background: rgba(255,255,255,.08); border: 1px solid var(--line); }
-    .danger { background: rgba(255, 111, 145, .12); border: 1px solid rgba(255, 111, 145, .32); }
-    .full { width: 100%; justify-content: center; }
-    .hero-card { position: relative; min-height: 270px; border: 1px solid var(--line); border-radius: 34px; padding: 34px; background: linear-gradient(160deg, rgba(255,255,255,.16), rgba(255,255,255,.05)); box-shadow: var(--shadow); overflow: hidden; }
-    .hero-card::after { content: ""; position: absolute; inset: auto -70px -90px auto; width: 220px; height: 220px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-2), var(--pink)); opacity: .42; }
-    .hero-card p { color: var(--muted); margin: 40px 0 4px; }
-    .hero-card strong { display: block; font-size: 86px; line-height: 1; }
-    .hero-card span { color: var(--brand); font-weight: 800; }
-    .pulse-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 12px rgba(115,241,212,.13); }
-    .layout { display: grid; grid-template-columns: minmax(360px, .95fr) minmax(360px, 1.15fr) 360px; gap: 18px; max-width: 1440px; padding: 0 clamp(18px, 3vw, 42px) 32px; margin: 0 auto; }
-    .panel { border: 1px solid var(--line); border-radius: 30px; padding: 24px; background: rgba(12, 17, 35, .72); box-shadow: var(--shadow); backdrop-filter: blur(22px); }
-    .section-title h2 { margin: 0; font-size: 28px; letter-spacing: -.04em; }
-    .hint { color: var(--muted); line-height: 1.7; margin: 12px 0 18px; }
-    .map-wrap { border-radius: 26px; padding: 12px; background: radial-gradient(circle at 50% 40%, rgba(115,241,212,.14), transparent 52%), rgba(255,255,255,.04); border: 1px solid var(--line); }
-    #districtMap { width: 100%; height: auto; display: block; }
-    .district-node rect { fill: rgba(255,255,255,.08); stroke: rgba(255,255,255,.20); stroke-width: 1.5; filter: drop-shadow(0 10px 14px rgba(0,0,0,.25)); transition: .2s ease; }
-    .district-node text { fill: #f7fbff; font-size: 18px; font-weight: 900; pointer-events: none; }
-    .district-node .count { fill: var(--brand); font-size: 13px; font-weight: 800; }
-    .district-node:hover rect, .district-node.active rect { fill: rgba(115,241,212,.24); stroke: var(--brand); }
-    .district-node.hot rect { fill: rgba(255, 209, 102, .24); stroke: rgba(255, 209, 102, .75); }
-    .district-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-    .district-chip { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.05); color: var(--muted); font-weight: 800; }
-    .district-chip.active { color: #04120f; background: var(--brand); }
-    .data-source-box { margin: 18px 0 10px; padding: 16px; border: 1px solid rgba(115,241,212,.24); border-radius: 22px; background: linear-gradient(135deg, rgba(115,241,212,.10), rgba(140,167,255,.08)); }
-    .data-source-box strong { display: block; margin-bottom: 6px; }
-    .data-source-box p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 13px; }
-    .category-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 18px 0; }
-    .tab { padding: 12px 10px; border-radius: 16px; background: rgba(255,255,255,.06); border: 1px solid var(--line); color: var(--muted); }
-    .tab.active { background: linear-gradient(135deg, rgba(115,241,212,.22), rgba(140,167,255,.20)); color: var(--text); border-color: rgba(115,241,212,.42); }
-    .cards { display: grid; gap: 12px; }
-    .card { position: relative; border: 1px solid var(--line); border-radius: 22px; padding: 18px 18px 18px 56px; background: linear-gradient(145deg, rgba(255,255,255,.11), rgba(255,255,255,.045)); overflow: hidden; }
-    .card input { position: absolute; left: 20px; top: 22px; width: 20px; height: 20px; accent-color: var(--brand); }
-    .card h3 { margin: 0 0 8px; font-size: 19px; }
-    .card p { margin: 0 0 12px; color: var(--muted); line-height: 1.55; }
-    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
-    .meta-row span { border-radius: 12px; padding: 6px 9px; background: rgba(255, 209, 102, .10); border: 1px solid rgba(255, 209, 102, .22); color: #ffe3a3; font-size: 12px; font-weight: 900; }
-    .review-note { margin: 0 0 12px; color: #cbd6ff; font-size: 13px; line-height: 1.5; }
-    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tags span { border-radius: 999px; padding: 5px 9px; background: rgba(115,241,212,.11); color: #c8fff3; font-size: 12px; font-weight: 800; }
-    .voter-box { padding: 16px; border-radius: 22px; background: rgba(255,255,255,.06); border: 1px solid var(--line); }
-    .voter-box label { display: block; color: var(--muted); margin-bottom: 10px; }
-    .voter-box input { flex: 1; min-width: 160px; border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: rgba(0,0,0,.22); color: var(--text); outline: 0; }
-    .voter-box button { border-radius: 14px; padding: 12px 14px; background: var(--brand); color: #07120f; }
-    .voter-box small { display: block; color: var(--muted); line-height: 1.6; margin-top: 10px; }
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
-    .stats-grid div, .winner-card, .result-block { border: 1px solid var(--line); border-radius: 22px; background: rgba(255,255,255,.055); padding: 16px; }
-    .stats-grid strong { display: block; font-size: 40px; }
-    .stats-grid span, .winner-card span { color: var(--muted); }
-    .winner-card h3 { margin: 8px 0; font-size: 22px; color: var(--gold); }
-    .winner-card p { color: var(--muted); margin: 0; line-height: 1.55; }
-    .result-block { margin-top: 14px; }
-    .result-block h3 { margin: 0 0 12px; }
-    .rank-item { padding: 12px 0; border-top: 1px solid var(--line); }
-    .rank-item:first-child { border-top: 0; }
-    .rank-item strong { display: block; }
-    .rank-item span { color: var(--muted); font-size: 13px; }
-    .bar { margin: 12px 0; }
-    .bar-label { display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; margin-bottom: 7px; }
-    .bar-track { height: 9px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--brand), var(--gold)); }
-    .empty { color: var(--muted); line-height: 1.7; }
-    .utility-actions { margin-top: 16px; }
-    .how-it-works { max-width: 1180px; padding: 42px 24px 64px; margin: 0 auto; }
-    .center { text-align: center; }
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
-    .steps article { border: 1px solid var(--line); border-radius: 26px; padding: 24px; background: rgba(255,255,255,.07); }
-    .steps span { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 15px; color: #08130f; background: var(--brand); font-weight: 900; }
-    .steps h3 { margin: 18px 0 8px; }
-    .steps p, footer { color: var(--muted); line-height: 1.7; }
-    footer { text-align: center; padding: 0 24px 42px; }
-    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); padding: 12px 18px; border-radius: 999px; background: rgba(8, 10, 20, .9); border: 1px solid var(--line); box-shadow: var(--shadow); z-index: 10; }
-    @media (max-width: 1120px) { .hero-grid, .layout { grid-template-columns: 1fr; } .hero-card { min-height: 210px; } }
-    @media (max-width: 720px) { .hero { padding-top: 18px; } .topbar { margin-bottom: 40px; } .category-tabs, .steps { grid-template-columns: 1fr 1fr; } .panel { padding: 18px; border-radius: 24px; } }
-    @media (max-width: 480px) { .category-tabs, .steps, .stats-grid { grid-template-columns: 1fr; } h1 { font-size: 44px; } }
-  </style>
+  <title>上海朋友聚会选择器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="ambient ambient-a"></div>
@@ -136,7 +21,7 @@
       <div>
         <p class="eyebrow">Shanghai Meetup Planner</p>
         <h1>让朋友聚会从“去哪儿”变成“一起选”。</h1>
-        <p class="lead">纯静态单文件版，无需后端、无需 Key、无需外部接口。以上海 16 个区为地图入口，按室内游玩、室外景点、美食、娱乐四类展示场景化 TOP10 推荐，支持多人轮流投票和本地统计。</p>
+        <p class="lead">以上海 16 个区为地图入口，按室内游玩、室外景点、美食、娱乐四类展示每区 TOP10 推荐。TOP10 不再堆同类地点，而是按密室、新奇体验、桌游、不同菜系等细分场景各取 TOP1，方便朋友们快速比较不同玩法。</p>
         <div class="hero-actions">
           <button class="primary" id="scrollToPlanner">打开地图选择</button>
           <button class="secondary" id="loadDemo">载入示例投票</button>
@@ -153,298 +38,91 @@
 
   <main id="planner" class="layout">
     <section class="panel map-panel">
-      <div class="section-title"><p>01 / 选择区域</p><h2>上海区域地图</h2></div>
-      <p class="hint">点击地图上的区块，右侧会切换到该区域的场景化 TOP10 推荐。颜色越亮表示当前选择越多。</p>
-      <div class="map-wrap"><svg id="districtMap" viewBox="0 0 760 560" role="img" aria-label="上海市区域选择地图"></svg></div>
+      <div class="section-title">
+        <p>01 / 选择区域</p>
+        <h2>上海区域地图</h2>
+      </div>
+      <p class="hint">点击地图上的区块，右侧会切换到该区域的场景化 TOP10 推荐。每个细分场景只保留一个首选项，美食按菜系拆分，避免重复推荐。颜色越亮表示当前选择越多。</p>
+      <div class="map-wrap">
+        <svg id="districtMap" viewBox="0 0 760 560" role="img" aria-label="上海市区域选择地图"></svg>
+      </div>
       <div class="district-strip" id="districtStrip"></div>
     </section>
 
     <section class="panel picker-panel">
-      <div class="section-title"><p>02 / 勾选想玩</p><h2><span id="currentDistrictName">黄浦区</span>推荐</h2></div>
+      <div class="section-title">
+        <p>02 / 勾选想玩</p>
+        <h2><span id="currentDistrictName">黄浦区</span>推荐</h2>
+      </div>
       <div class="data-source-box">
-        <strong>纯静态版说明</strong>
-        <p>当前版本使用内置推荐数据，投票结果保存在当前浏览器本地。适合同一台手机/电脑轮流投票，或由一个人代大家录入偏好。</p>
+        <div>
+          <strong>真实数据源：高德 POI</strong>
+          <p id="sourceStatus">已改为服务端代理模式：高德 Key 存在后端，朋友打开链接无需输入 Key，也不会看到 Key。</p>
+        </div>
+        <form class="source-actions proxy-actions" id="sourceForm">
+          <button id="refreshPoi" class="secondary" type="button">刷新真实 POI</button>
+        </form>
+        <details class="admin-config">
+          <summary>公网部署配置说明</summary>
+          <small>在 Vercel 项目设置里添加环境变量 <code>AMAP_WEB_SERVICE_KEY</code> 后，朋友打开公网链接即可使用真实 POI。Key 只在服务端 API 中读取，不会进入浏览器。</small>
+        </details>
       </div>
       <div class="category-tabs" id="categoryTabs"></div>
       <div class="cards" id="cards"></div>
     </section>
 
     <aside class="panel result-panel">
-      <div class="section-title"><p>03 / 统计结果</p><h2>朋友们的共同答案</h2></div>
+      <div class="section-title">
+        <p>03 / 统计结果</p>
+        <h2>朋友们的共同答案</h2>
+      </div>
       <div class="voter-box">
         <label for="voterName">当前朋友</label>
-        <div class="voter-row"><input id="voterName" type="text" placeholder="例如：小毕 / Alice" /><button id="saveVoter">保存选择</button></div>
+        <div class="voter-row">
+          <input id="voterName" type="text" placeholder="例如：小毕 / Alice" />
+          <button id="saveVoter">保存选择</button>
+        </div>
         <small>可以多人轮流选择，保存后继续给下一位朋友勾选。</small>
       </div>
-      <div class="stats-grid"><div><strong id="statPeople">0</strong><span>位朋友</span></div><div><strong id="statItems">0</strong><span>总选择</span></div></div>
-      <div class="winner-card"><span>当前最高票</span><h3 id="winnerText">还没有选择</h3><p id="winnerSub">先从地图上选一个区域开始吧。</p></div>
-      <div class="result-block"><h3>活动榜单</h3><div id="rankingList" class="ranking-list empty">暂无数据</div></div>
-      <div class="result-block"><h3>区域热度</h3><div id="districtStats" class="bar-list empty">暂无数据</div></div>
-      <div class="utility-actions"><button id="copySummary" class="secondary full">复制统计摘要</button><button id="resetAll" class="danger full">清空选择</button></div>
+      <div class="stats-grid">
+        <div><strong id="statPeople">0</strong><span>位朋友</span></div>
+        <div><strong id="statItems">0</strong><span>总选择</span></div>
+      </div>
+      <div class="winner-card">
+        <span>当前最高票</span>
+        <h3 id="winnerText">还没有选择</h3>
+        <p id="winnerSub">先从地图上选一个区域开始吧。</p>
+      </div>
+      <div class="result-block">
+        <h3>活动榜单</h3>
+        <div id="rankingList" class="ranking-list empty">暂无数据</div>
+      </div>
+      <div class="result-block">
+        <h3>区域热度</h3>
+        <div id="districtStats" class="bar-list empty">暂无数据</div>
+      </div>
+      <div class="utility-actions">
+        <button id="copySummary" class="secondary full">复制统计摘要</button>
+        <button id="resetAll" class="danger full">清空选择</button>
+      </div>
     </aside>
   </main>
 
   <section class="how-it-works">
-    <div class="section-title center"><p>How it works</p><h2>适合朋友圈快速达成共识</h2></div>
+    <div class="section-title center">
+      <p>How it works</p>
+      <h2>适合朋友圈快速达成共识</h2>
+    </div>
     <div class="steps">
       <article><span>1</span><h3>按区域缩小范围</h3><p>先确认大家可接受的上海区域，避免跨城通勤式聚会。</p></article>
-      <article><span>2</span><h3>按活动类型挑选</h3><p>室内、室外、美食、娱乐分组展示，照顾不同天气和预算。</p></article>
+      <article><span>2</span><h3>按活动类型挑选</h3><p>室内、室外、美食、娱乐分组展示，能照顾不同天气和预算。</p></article>
       <article><span>3</span><h3>多人勾选自动统计</h3><p>每位朋友保存偏好后，系统输出最高票活动和热门区域。</p></article>
     </div>
   </section>
-  <footer><p>纯静态版推荐内容为聚会决策参考，可后续升级为云数据库多人在线投票版。</p></footer>
 
-  <script>
-    const categories = [
-      { key: 'indoor', label: '室内游玩', icon: '🏛️' },
-      { key: 'outdoor', label: '室外景点', icon: '🌿' },
-      { key: 'food', label: '美食', icon: '🍜' },
-      { key: 'fun', label: '娱乐', icon: '🎤' }
-    ];
-
-    const districts = [
-      { id: 'qingpu', name: '青浦区', x: 30, y: 300, w: 120, h: 76, color: '#8ca7ff', area: '朱家角 / 蟠龙天地 / 奥莱' },
-      { id: 'jiading', name: '嘉定区', x: 95, y: 92, w: 118, h: 76, color: '#ffd166', area: '南翔 / 安亭 / 嘉定新城' },
-      { id: 'chongming', name: '崇明区', x: 480, y: 28, w: 188, h: 50, color: '#89f7a7', area: '东平森林 / 东滩 / 长兴岛' },
-      { id: 'baoshan', name: '宝山区', x: 385, y: 86, w: 128, h: 72, color: '#9ee493', area: '顾村 / 吴淞 / 宝山万达' },
-      { id: 'putuo', name: '普陀区', x: 225, y: 150, w: 110, h: 66, color: '#b18cff', area: '环球港 / 长风 / 苏州河' },
-      { id: 'jingan', name: '静安区', x: 325, y: 182, w: 102, h: 64, color: '#ffd166', area: '静安寺 / 南京西路 / 苏河湾' },
-      { id: 'hongkou', name: '虹口区', x: 440, y: 166, w: 104, h: 66, color: '#7bdff2', area: '北外滩 / 1933 / 鲁迅公园' },
-      { id: 'yangpu', name: '杨浦区', x: 535, y: 206, w: 114, h: 72, color: '#73f1d4', area: '五角场 / 大学路 / 杨浦滨江' },
-      { id: 'huangpu', name: '黄浦区', x: 352, y: 260, w: 92, h: 62, color: '#73f1d4', area: '外滩 / 新天地 / 人民广场' },
-      { id: 'xuhui', name: '徐汇区', x: 245, y: 320, w: 102, h: 70, color: '#8ca7ff', area: '徐家汇 / 西岸 / 衡复风貌区' },
-      { id: 'changning', name: '长宁区', x: 190, y: 230, w: 108, h: 70, color: '#ff9f7a', area: '中山公园 / 愚园路 / 古北' },
-      { id: 'pudong', name: '浦东新区', x: 480, y: 300, w: 160, h: 106, color: '#89f7a7', area: '陆家嘴 / 前滩 / 迪士尼' },
-      { id: 'minhang', name: '闵行区', x: 140, y: 390, w: 130, h: 78, color: '#ff7ab6', area: '七宝 / 韩国街 / 爱琴海' },
-      { id: 'songjiang', name: '松江区', x: 120, y: 482, w: 132, h: 66, color: '#7bdff2', area: '佘山 / 欢乐谷 / 广富林' },
-      { id: 'fengxian', name: '奉贤区', x: 372, y: 446, w: 134, h: 76, color: '#b18cff', area: '南桥 / 上海之鱼 / 海湾' },
-      { id: 'jinshan', name: '金山区', x: 254, y: 492, w: 112, h: 62, color: '#ff9f7a', area: '城市沙滩 / 枫泾 / 金山嘴' }
-    ];
-
-    const sceneTemplates = {
-      indoor: [
-        ['密室逃脱 TOP1', '适合 4-8 人沉浸式互动，熟人局更容易热起来。', '密室', '场景TOP1', '评分待核验', '人均¥120-260', '评价关键词：剧情、互动、组队'],
-        ['新奇体验 TOP1', '漂浮馆、VR、减压馆等新鲜体验，适合想玩点不一样的朋友。', '新奇体验', '场景TOP1', '评分待核验', '人均¥120-300', '评价关键词：新鲜感、体验、出片'],
-        ['桌游馆 TOP1', '低预算、轻社交、方便聊天破冰。', '桌游', '场景TOP1', '评分待核验', '人均¥50-100', '评价关键词：轻松、多人、聊天'],
-        ['剧本杀 TOP1', '适合推理、阵营和沉浸剧情爱好者。', '剧本杀', '场景TOP1', '评分待核验', '人均¥120-220', '评价关键词：推理、沉浸、社交'],
-        ['电玩城 TOP1', '抓娃娃、音游、赛车、投篮，适合快速破冰。', '电玩城', '场景TOP1', '评分待核验', '人均¥80-180', '评价关键词：互动、轻松、竞技'],
-        ['保龄球/台球 TOP1', '适合饭前饭后轻运动，参与门槛低。', '保龄球台球', '场景TOP1', '评分待核验', '人均¥80-180', '评价关键词：轻运动、组队'],
-        ['看展/美术馆 TOP1', '雨天友好，适合文艺型聚会和拍照。', '看展', '场景TOP1', '评分待核验', '票价依展览', '评价关键词：文艺、拍照、安静'],
-        ['影院 TOP1', '电影后直接聚餐续摊，决策成本低。', '影院', '场景TOP1', '评分待核验', '人均¥60-120', '评价关键词：稳定、轻松、好约'],
-        ['手作体验 TOP1', '陶艺、香薰、银饰等，互动感和纪念感都不错。', '手作', '场景TOP1', '评分待核验', '人均¥120-280', '评价关键词：互动、纪念感'],
-        ['商场一站式 TOP1', '天气不稳定时，吃喝玩乐一次解决。', '商场', '场景TOP1', '评分待核验', '人均/票价待核验', '评价关键词：选择多、交通方便']
-      ],
-      outdoor: [
-        ['Citywalk TOP1', '适合拍照、咖啡和饭后散步串联。', 'Citywalk', '场景TOP1', '评分待核验', '免费/低消费', '评价关键词：散步、出片、松弛'],
-        ['公园野餐 TOP1', '草坪、飞盘、野餐垫，适合低成本多人局。', '公园野餐', '场景TOP1', '评分待核验', '免费/依项目', '评价关键词：草坪、户外、放松'],
-        ['滨江夜景 TOP1', '适合傍晚和夜景路线，饭后散步很稳。', '滨江夜景', '场景TOP1', '评分待核验', '免费', '评价关键词：夜景、散步、拍照'],
-        ['古镇老街 TOP1', '适合半日慢逛、小吃和拍照。', '古镇老街', '场景TOP1', '评分待核验', '费用待核验', '评价关键词：慢逛、小吃、文化'],
-        ['历史建筑 TOP1', '适合轻文化路线和咖啡小店。', '历史建筑', '场景TOP1', '评分待核验', '免费/低消费', '评价关键词：建筑、咖啡、慢逛'],
-        ['亲水湖景 TOP1', '看湖、骑行和周末放空都合适。', '湖景', '场景TOP1', '评分待核验', '免费/依项目', '评价关键词：湖景、骑行、放松'],
-        ['森林郊野 TOP1', '适合露营、骑行和自然路线。', '森林郊野', '场景TOP1', '评分待核验', '费用待核验', '评价关键词：自然、露营、空气好'],
-        ['花园植物 TOP1', '花季拍照、轻户外和慢节奏聊天。', '花园植物', '场景TOP1', '评分待核验', '票价待核验', '评价关键词：花季、拍照、轻松'],
-        ['运动户外 TOP1', '飞盘、骑行、皮划艇等互动型活动。', '运动户外', '场景TOP1', '评分待核验', '人均依项目', '评价关键词：互动、运动、组队'],
-        ['周末打卡 TOP1', '半日游和朋友圈拍照都适合。', '周末打卡', '场景TOP1', '评分待核验', '费用待核验', '评价关键词：热门、出片、好逛']
-      ],
-      food: [
-        ['本帮菜 TOP1', '体验上海味道，适合正式一点的朋友聚餐。', '本帮菜', '菜系TOP1', '评分待核验', '人均¥100-220', '评价关键词：本帮、经典、聚餐'],
-        ['火锅 TOP1', '多人聚餐容错率高，口味接受度广。', '火锅', '菜系TOP1', '评分待核验', '人均¥120-220', '评价关键词：热闹、服务、适合多人'],
-        ['日料 TOP1', '适合小桌精致聚餐或居酒屋小酌。', '日料', '菜系TOP1', '评分待核验', '人均¥150-350', '评价关键词：刺身、烧鸟、品质'],
-        ['韩餐 TOP1', '烤肉、部队锅和热闹朋友局都适合。', '韩餐', '菜系TOP1', '评分待核验', '人均¥100-200', '评价关键词：烤肉、韩式、热闹'],
-        ['西餐 TOP1', '适合仪式感、约会感和轻奢晚餐。', '西餐', '菜系TOP1', '评分待核验', '人均¥180-350', '评价关键词：氛围、摆盘、约会'],
-        ['粤菜/港式 TOP1', '口味稳妥，点心和多人分享友好。', '粤菜港式', '菜系TOP1', '评分待核验', '人均¥100-220', '评价关键词：点心、稳妥、分享'],
-        ['江浙菜 TOP1', '环境友好、菜品稳定，适合多人聚餐。', '江浙菜', '菜系TOP1', '评分待核验', '人均¥100-180', '评价关键词：环境、稳定、聚餐'],
-        ['烧烤/烤肉 TOP1', '适合夜宵和聊天续摊。', '烧烤烤肉', '菜系TOP1', '评分待核验', '人均¥100-180', '评价关键词：夜宵、热闹、朋友局'],
-        ['咖啡甜品 TOP1', '下午茶和轻量约见，压力小。', '咖啡甜品', '菜系TOP1', '评分待核验', '人均¥50-100', '评价关键词：拍照、聊天、轻松'],
-        ['小吃夜市 TOP1', '边走边吃、预算友好、烟火气足。', '小吃夜市', '菜系TOP1', '评分待核验', '人均¥30-100', '评价关键词：烟火气、小吃、实惠']
-      ],
-      fun: [
-        ['KTV TOP1', '适合生日局和饭后续摊。', 'KTV', '场景TOP1', '评分待核验', '人均¥100-240', '评价关键词：包厢、曲库、热闹'],
-        ['清吧 TOP1', '适合聊天型夜间聚会。', '清吧', '场景TOP1', '评分待核验', '人均¥100-220', '评价关键词：氛围、聊天、音乐'],
-        ['Livehouse TOP1', '适合音乐朋友和夜间活动。', 'Livehouse', '场景TOP1', '评分待核验', '票价依演出', '评价关键词：现场、音效、年轻'],
-        ['脱口秀/剧场 TOP1', '轻松观演，饭后安排很合适。', '脱口秀剧场', '场景TOP1', '评分待核验', '票价依演出', '评价关键词：好笑、观演、轻松'],
-        ['酒吧夜景 TOP1', '适合微醺和城市夜景。', '酒吧夜景', '场景TOP1', '评分待核验', '人均¥150-350', '评价关键词：夜景、氛围、微醺'],
-        ['夜游路线 TOP1', '晚餐后散步、拍照和续摊。', '夜游', '场景TOP1', '评分待核验', '人均依消费', '评价关键词：夜景、松弛、续摊'],
-        ['轰趴馆 TOP1', '适合大团、生日、桌游和唱歌混合局。', '轰趴', '场景TOP1', '评分待核验', '人均¥150-300', '评价关键词：大团、生日、私密'],
-        ['卡丁车/运动娱乐 TOP1', '适合高能朋友局。', '运动娱乐', '场景TOP1', '评分待核验', '人均¥150-300', '评价关键词：刺激、竞技、组队'],
-        ['密室/鬼屋娱乐 TOP1', '适合想要刺激和互动的朋友。', '刺激娱乐', '场景TOP1', '评分待核验', '人均¥120-260', '评价关键词：刺激、互动、沉浸'],
-        ['商圈续摊 TOP1', '晚餐后临时决定也稳妥。', '商圈续摊', '场景TOP1', '评分待核验', '人均依消费', '评价关键词：方便、选择多、稳妥']
-      ]
-    };
-
-    let currentDistrict = 'huangpu';
-    let currentCategory = 'indoor';
-    let currentSelections = new Set();
-    let votes = JSON.parse(localStorage.getItem('meetupVotesStatic') || '[]');
-
-    const mapEl = document.querySelector('#districtMap');
-    const stripEl = document.querySelector('#districtStrip');
-    const tabsEl = document.querySelector('#categoryTabs');
-    const cardsEl = document.querySelector('#cards');
-    const nameEl = document.querySelector('#currentDistrictName');
-
-    function keyOf(district, category, index) { return `${district}|${category}|${index}`; }
-    function getDistrict(id) { return districts.find(d => d.id === id); }
-    function escapeHtml(value = '') { return String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char])); }
-    function getItems(districtId, categoryKey) {
-      const district = getDistrict(districtId);
-      return sceneTemplates[categoryKey].map((item) => {
-        const sceneName = item[0].replace(' TOP1', '');
-        return [`${district.name}${sceneName}`, `${district.area} 附近推荐：${item[1]}`, ...item.slice(2), '纯静态推荐'];
-      });
-    }
-    function getItemFromKey(key) {
-      const [districtId, categoryKey, index] = key.split('|');
-      const district = getDistrict(districtId);
-      const category = categories.find(c => c.key === categoryKey);
-      const item = getItems(districtId, categoryKey)[Number(index)];
-      return item ? { district, category, item } : null;
-    }
-    function countByDistrict() {
-      const counts = {};
-      votes.flatMap(v => v.items).concat([...currentSelections]).forEach(k => {
-        const info = getItemFromKey(k);
-        if (info) counts[info.district.id] = (counts[info.district.id] || 0) + 1;
-      });
-      return counts;
-    }
-    function renderMap() {
-      const districtCounts = countByDistrict();
-      mapEl.innerHTML = '<defs><filter id="glow"><feGaussianBlur stdDeviation="3.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
-      districts.forEach(tile => {
-        const count = districtCounts[tile.id] || 0;
-        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        g.classList.add('district-node');
-        if (tile.id === currentDistrict) g.classList.add('active');
-        if (count > 0) g.classList.add('hot');
-        g.setAttribute('tabindex', '0');
-        g.setAttribute('role', 'button');
-        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        rect.setAttribute('x', tile.x); rect.setAttribute('y', tile.y); rect.setAttribute('width', tile.w); rect.setAttribute('height', tile.h); rect.setAttribute('rx', 18);
-        rect.style.fill = count > 0 ? `${tile.color}3b` : 'rgba(255,255,255,.08)';
-        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('x', tile.x + tile.w / 2); text.setAttribute('y', tile.y + tile.h / 2 - 2); text.setAttribute('text-anchor', 'middle'); text.textContent = tile.name;
-        const countText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        countText.setAttribute('x', tile.x + tile.w / 2); countText.setAttribute('y', tile.y + tile.h / 2 + 21); countText.setAttribute('text-anchor', 'middle'); countText.classList.add('count'); countText.textContent = count ? `${count} 票` : '点击选择';
-        g.append(rect, text, countText);
-        g.addEventListener('click', () => selectDistrict(tile.id));
-        g.addEventListener('keydown', e => { if (e.key === 'Enter') selectDistrict(tile.id); });
-        mapEl.appendChild(g);
-      });
-    }
-    function renderStrip() {
-      stripEl.innerHTML = '';
-      districts.forEach(d => {
-        const btn = document.createElement('button');
-        btn.className = `district-chip ${d.id === currentDistrict ? 'active' : ''}`;
-        btn.textContent = d.name;
-        btn.onclick = () => selectDistrict(d.id);
-        stripEl.appendChild(btn);
-      });
-    }
-    function renderTabs() {
-      tabsEl.innerHTML = '';
-      categories.forEach(c => {
-        const btn = document.createElement('button');
-        btn.className = `tab ${c.key === currentCategory ? 'active' : ''}`;
-        btn.textContent = `${c.icon} ${c.label}`;
-        btn.onclick = () => { currentCategory = c.key; renderAll(); };
-        tabsEl.appendChild(btn);
-      });
-    }
-    function renderCards() {
-      const district = getDistrict(currentDistrict);
-      nameEl.textContent = district.name;
-      cardsEl.innerHTML = '';
-      getItems(currentDistrict, currentCategory).forEach((item, index) => {
-        const id = keyOf(currentDistrict, currentCategory, index);
-        const safe = item.map(escapeHtml);
-        const label = document.createElement('label');
-        label.className = 'card';
-        label.innerHTML = `<input type="checkbox" ${currentSelections.has(id) ? 'checked' : ''}/><h3>TOP${index + 1} · ${safe[0]}</h3><p>${safe[1]}</p><div class="meta-row"><span>⭐ ${safe[4]}</span><span>${safe[5]}</span></div><div class="review-note">${safe[6]}</div><div class="tags"><span>${safe[2]}</span><span>${safe[3]}</span><span>${escapeHtml(categories.find(c => c.key === currentCategory).label)}</span><span>${safe[7]}</span></div>`;
-        label.querySelector('input').onchange = e => {
-          e.target.checked ? currentSelections.add(id) : currentSelections.delete(id);
-          renderStats();
-          renderMap();
-        };
-        cardsEl.appendChild(label);
-      });
-    }
-    function selectDistrict(id) { currentDistrict = id; renderAll(); }
-    function renderStats() {
-      const allKeys = votes.flatMap(v => v.items).concat([...currentSelections]);
-      document.querySelector('#heroSelectedCount').textContent = allKeys.length;
-      document.querySelector('#statPeople').textContent = votes.length;
-      document.querySelector('#statItems').textContent = allKeys.length;
-      const itemCounts = {};
-      allKeys.forEach(k => itemCounts[k] = (itemCounts[k] || 0) + 1);
-      const ranking = Object.entries(itemCounts).sort((a,b) => b[1] - a[1]).slice(0, 6);
-      const rankingEl = document.querySelector('#rankingList');
-      if (!ranking.length) {
-        rankingEl.className = 'ranking-list empty';
-        rankingEl.textContent = '暂无数据';
-        document.querySelector('#winnerText').textContent = '还没有选择';
-        document.querySelector('#winnerSub').textContent = '先从地图上选一个区域开始吧。';
-      } else {
-        rankingEl.className = 'ranking-list';
-        rankingEl.innerHTML = ranking.map(([k, count], i) => {
-          const info = getItemFromKey(k);
-          return `<div class="rank-item"><strong>${i + 1}. ${escapeHtml(info.item[0])} · ${count} 票</strong><span>${escapeHtml(info.district.name)} / ${escapeHtml(info.category.label)} / ${escapeHtml(info.item[2])}</span></div>`;
-        }).join('');
-        const top = getItemFromKey(ranking[0][0]);
-        document.querySelector('#winnerText').textContent = `${top.item[0]}（${ranking[0][1]} 票）`;
-        document.querySelector('#winnerSub').textContent = `${top.district.name} · ${top.category.label}。${top.item[1]}`;
-      }
-      const dCounts = countByDistrict();
-      const max = Math.max(1, ...Object.values(dCounts));
-      const districtStats = Object.entries(dCounts).sort((a,b) => b[1]-a[1]).slice(0, 8);
-      const dEl = document.querySelector('#districtStats');
-      if (!districtStats.length) { dEl.className = 'bar-list empty'; dEl.textContent = '暂无数据'; }
-      else {
-        dEl.className = 'bar-list';
-        dEl.innerHTML = districtStats.map(([id, count]) => `<div class="bar"><div class="bar-label"><span>${getDistrict(id).name}</span><span>${count} 票</span></div><div class="bar-track"><div class="bar-fill" style="width:${count / max * 100}%"></div></div></div>`).join('');
-      }
-    }
-    function renderAll() { renderMap(); renderStrip(); renderTabs(); renderCards(); renderStats(); }
-    function toast(msg) { const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; document.body.appendChild(el); setTimeout(() => el.remove(), 2100); }
-
-    document.querySelector('#saveVoter').onclick = () => {
-      if (!currentSelections.size) return toast('请至少勾选 1 个想玩的内容');
-      const name = document.querySelector('#voterName').value.trim() || `朋友${votes.length + 1}`;
-      votes.push({ name, items: [...currentSelections] });
-      localStorage.setItem('meetupVotesStatic', JSON.stringify(votes));
-      currentSelections.clear();
-      document.querySelector('#voterName').value = '';
-      renderAll();
-      toast(`${name} 的选择已保存`);
-    };
-    document.querySelector('#resetAll').onclick = () => {
-      if (!confirm('确定清空所有选择和统计吗？')) return;
-      votes = [];
-      currentSelections.clear();
-      localStorage.removeItem('meetupVotesStatic');
-      renderAll();
-      toast('已清空');
-    };
-    document.querySelector('#copySummary').onclick = async () => {
-      const ranking = Object.entries([...votes.flatMap(v => v.items), ...currentSelections].reduce((acc, k) => (acc[k]=(acc[k]||0)+1, acc), {})).sort((a,b) => b[1]-a[1]).slice(0,10);
-      const text = ranking.length ? ranking.map(([k,c], i) => { const info = getItemFromKey(k); return `${i+1}. ${info.item[0]}｜${info.district.name}｜${info.category.label}｜${c}票`; }).join('\n') : '暂无聚会选择结果';
-      try { await navigator.clipboard.writeText(`上海朋友聚会选择结果\n${text}`); toast('统计摘要已复制'); }
-      catch { window.prompt('复制下面的统计摘要：', `上海朋友聚会选择结果\n${text}`); }
-    };
-    document.querySelector('#scrollToPlanner').onclick = () => document.querySelector('#planner').scrollIntoView({ behavior: 'smooth' });
-    document.querySelector('#loadDemo').onclick = () => {
-      votes = [
-        { name: '阿宇', items: ['huangpu|outdoor|0','jingan|food|0','xuhui|fun|1'] },
-        { name: 'Mia', items: ['huangpu|outdoor|0','xuhui|outdoor|0','pudong|food|0'] },
-        { name: 'Leo', items: ['jingan|food|0','changning|fun|0','huangpu|indoor|1'] }
-      ];
-      localStorage.setItem('meetupVotesStatic', JSON.stringify(votes));
-      renderAll();
-      toast('已载入示例投票');
-    };
-
-    renderAll();
-  </script>
+  <footer>
+    <p>推荐内容为聚会选题原型数据，可后续接入真实 POI、评分、距离和预算数据。</p>
+  </footer>
+  <script src="app.js"></script>
 </body>
 </html>
